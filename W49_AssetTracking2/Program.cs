@@ -1,7 +1,7 @@
 ﻿
 using W49_AssetTracking2;
 
-
+DatabaseContext context = new DatabaseContext();
 string input;
 
 while (true)
@@ -16,7 +16,7 @@ while (true)
     {
         case "1":
             //Handle showing assets
-            Methods.ShowMessage("Showing all assets!!", "Blue");
+            Methods.ShowAssets(context);
             break;
         case "2":
             //Handle adding assets

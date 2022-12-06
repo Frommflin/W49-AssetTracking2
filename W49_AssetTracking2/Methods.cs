@@ -35,5 +35,38 @@
             Console.WriteLine();
             Console.ResetColor();
         }
+
+        public static void ShowAssets(DatabaseContext context)
+        {
+            // Collection all data from Hardwares table in db and ordering in a List
+            List<Hardware> orderedAssets = context.Hardwares
+                .OrderBy(a => a.Type)
+                .ThenBy(a => a.DateOfPurchase)
+                .ToList();
+
+            DateTime maxLifeTime = DateTime.Now.AddYears(-3);
+
+            // Printing out sorted list to user
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Type".PadRight(20) + "Brand".PadRight(20) + "Model".PadRight(20) + "Price (USD)".PadRight(20) + "Date of purchase");
+            Console.WriteLine("-------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+
+            foreach (Hardware hardware in orderedAssets)
+            {
+                TimeSpan diff = hardware.DateOfPurchase - maxLifeTime;
+                
+                // Check if date of purchase is less than 3 months away from 3 years and make RED
+                if (diff.Days < 90) 
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                Console.WriteLine(hardware.Type.PadRight(20) + hardware.Brand.PadRight(20) + hardware.Model.PadRight(20) + hardware.Price.ToString().PadRight(20) + hardware.DateOfPurchase.ToString("yyyy-MM-dd"));
+                Console.ResetColor();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+        }
     }
 }
