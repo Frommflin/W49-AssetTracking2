@@ -15,19 +15,19 @@ while (true)
     switch (input)
     {
         case "1":
-            // Handle showing assets
-            Methods.ShowAssets(context);
+            // Showing assets
+            Methods.ShowAssets(context, false);
             break;
         case "2":
-            // Handle adding assets
+            // Adding assets
             Methods.AddAsset(context);
             break;
         case "3":
-            // Handle updating asset
-            Methods.ShowMessage("Update asset", "Blue");
+            // Updating asset
+            Methods.UpdateAsset(context);
             break;
         case "4":
-            // Handle deleting asset
+            // Deleting asset
             Methods.ShowMessage("Delete asset", "Blue");
             break;
         case "5":
