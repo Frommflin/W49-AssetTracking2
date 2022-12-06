@@ -15,6 +15,60 @@ namespace W49_AssetTracking2
         }
         protected override void OnModelCreating(ModelBuilder ModelBuilder)
         {
+            ModelBuilder.Entity<Hardware>().HasData( new Hardware { 
+                Id = 1, 
+                Type = "Computer", 
+                Brand = "Lenovo", 
+                Model = "Legion", 
+                Price = 1600, 
+                DateOfPurchase = new DateTime(2021, 10, 04) 
+            });
+            ModelBuilder.Entity<Hardware>().HasData(new Hardware
+            {
+                Id = 2,
+                Type = "Computer",
+                Brand = "Acer",
+                Model = "Aspire XC",
+                Price = 1550,
+                DateOfPurchase = new DateTime(2019, 03, 20)
+            });
+            ModelBuilder.Entity<Hardware>().HasData(new Hardware
+            {
+                Id = 3,
+                Type = "Laptop",
+                Brand = "Apple",
+                Model = "MacBook",
+                Price = 650,
+                DateOfPurchase = new DateTime(2021, 05, 03)
+            });
+            ModelBuilder.Entity<Hardware>().HasData(new Hardware
+            {
+                Id = 4,
+                Type = "Laptop",
+                Brand = "Samsung",
+                Model = "Galaxy",
+                Price = 550,
+                DateOfPurchase = new DateTime(2020, 09, 18)
+            });
+            ModelBuilder.Entity<Hardware>().HasData(new Hardware
+            {
+                Id = 5,
+                Type = "Phone",
+                Brand = "Samsung",
+                Model = "S21",
+                Price = 200,
+                DateOfPurchase = new DateTime(2022, 07, 07)
+            });
+            ModelBuilder.Entity<Hardware>().HasData(new Hardware
+            {
+                Id = 6,
+                Type = "Phone",
+                Brand = "Huawei",
+                Model = "P30 Pro",
+                Price = 150,
+                DateOfPurchase = new DateTime(2019, 12, 27)
+            });
+
         }
     }
 }
