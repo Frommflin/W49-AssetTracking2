@@ -18,7 +18,13 @@ namespace W49_AssetTracking2
 
         public static void ShowMenu()
         {
-            string[] menu = { "Show Assets", "Add new Asset", "Exit AssetTracker" };
+            string[] menu = { 
+                "Show Assets", 
+                "Add new Asset", 
+                "Update an asset", 
+                "Delete an asset", 
+                "Exit AssetTracker" 
+            };
 
             Console.WriteLine("Menu: Type the number for the desired option to move on");
             Console.WriteLine("**************************");

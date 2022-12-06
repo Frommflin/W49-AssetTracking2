@@ -23,6 +23,14 @@ while (true)
             Methods.AddAsset(context);
             break;
         case "3":
+            // Handle updating asset
+            Methods.ShowMessage("Update asset", "Blue");
+            break;
+        case "4":
+            // Handle deleting asset
+            Methods.ShowMessage("Delete asset", "Blue");
+            break;
+        case "5":
             // Exiting application
             Methods.ShowMessage("Shutting down", "Red");
             return;
