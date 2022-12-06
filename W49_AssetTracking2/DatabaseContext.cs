@@ -6,6 +6,8 @@ namespace W49_AssetTracking2
     {
         string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=AssetTracking;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False";
 
+        public DbSet<Hardware> Hardwares { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // We tell the app to use the connectionstring.
