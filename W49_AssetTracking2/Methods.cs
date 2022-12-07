@@ -502,7 +502,6 @@ namespace W49_AssetTracking2
          *  ---              Level 3                 ---
          *  --------------------------------------------
         */
-
         public static void ShowAssets(DatabaseContext context, bool showIds)
         {
             // Collection all data from Hardwares table in db and ordering in a List
@@ -561,15 +560,14 @@ namespace W49_AssetTracking2
 
         public static void AddAsset(DatabaseContext context)
         {
-            ShowMessage("Level 3 under Construction", "Red");
-            /*
-            string input;
             string[] types = { "Computer", "Laptop", "Phone" };
-
+            string[] offices = { "USA", "Sweden", "Italy" };
+            string input;
             string type = "";
             string brand = "";
             string model = "";
             int price = 0;
+            int officeId = 0;
             DateTime date = new DateTime(0001, 01, 01);
 
             ShowMessage("Enter information about the new asset. \n   Enter 'Q' to leave at any time in the process.", "Blue");
@@ -697,15 +695,42 @@ namespace W49_AssetTracking2
                 }
             } while (date == new DateTime(0001, 01, 01));
 
+            ShowMessage("What office is this asset being used in?.", "Blue");
+            MultiOptionList(offices);
+            do
+            {
+                InputInstruction("Registering asset in office:");
+                input = Console.ReadLine();
+                input.Trim();
+
+                switch (input)
+                {
+                    case "1":
+                        officeId = 1;
+                        break;
+                    case "2":
+                        officeId = 2;
+                        break;
+                    case "3":
+                        officeId = 3;
+                        break;
+                    case "q":
+                        return;
+                    default:
+                        ShowMessage("This office doesn't exist", "Red");
+                        break;
+                }
+            } while (officeId == 0);
             Console.WriteLine();
 
             // Creating hardware to be added to database
-            Hardware asset = new Hardware();
+            Asset asset = new Asset();
             asset.Type = type;
             asset.Brand = brand;
             asset.Model = model;
             asset.Price = price;
             asset.DateOfPurchase = date;
+            asset.OfficeId = officeId;
 
             // Adding to database and saving
             context.Add(asset);
@@ -714,7 +739,6 @@ namespace W49_AssetTracking2
             // Confirmation on successfull add
             ShowMessage("Asset successfully added!", "Green");
             Console.WriteLine();
-            */
         }
 
         public static void UpdateAsset(DatabaseContext context)
