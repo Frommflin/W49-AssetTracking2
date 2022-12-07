@@ -6,7 +6,12 @@ namespace W49_AssetTracking2
     {
         string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=AssetTracking;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False";
 
+        // Level 1 & 2 Table
         public DbSet<Hardware> Hardwares { get; set; }
+        
+        // Level 3 Tables
+        public DbSet<Office> Offices { get; set; }
+        public DbSet<Asset> Assets { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -15,6 +20,11 @@ namespace W49_AssetTracking2
         }
         protected override void OnModelCreating(ModelBuilder ModelBuilder)
         {
+            /*  
+             *  --------------------------------------------
+             *  ---             Level 1-2                ---
+             *  --------------------------------------------
+            */
             ModelBuilder.Entity<Hardware>().HasData( new Hardware { 
                 Id = 1, 
                 Type = "Computer", 
@@ -69,6 +79,12 @@ namespace W49_AssetTracking2
                 DateOfPurchase = new DateTime(2019, 12, 27)
             });
 
+
+            /*  
+             *  --------------------------------------------
+             *  ---              Level 3                 ---
+             *  --------------------------------------------
+            */
         }
     }
 }
