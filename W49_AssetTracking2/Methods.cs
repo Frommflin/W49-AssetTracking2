@@ -274,20 +274,15 @@ namespace W49_AssetTracking2
         public static void UpdateAsset(DatabaseContext context)
         {
             string input;
-            
-            string id; //using this??
-
-            string[] options = { "Brand", "Model", "Price", "Date of Purchase" };
-
+            string[] options = { "Brand", "Model", "Price", "Date of Purchase", "Save & exit editing" };
             string editString = "";
             int editPrice = 0;
             DateTime editDate = new DateTime(0001,01,01);
             bool changeEntered = false;
+            Hardware editAsset;
 
-
-            ShowAssets(context, true);
             ShowMessage("Chose asset to edit. \n   Enter 'Q' to leave at any time in the process.", "Blue");
-
+            ShowAssets(context, true);
             InputInstruction("Asset ID:");
             input = Console.ReadLine();
             input.Trim();
@@ -297,156 +292,166 @@ namespace W49_AssetTracking2
             {
                 return;
             }
-                
-            Hardware editAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
-
-            if (editAsset != null)
-            {
-                ShowMessage($"Editing asset with id {editAsset.Id}\n", "Green");
-                ShowMessage("What field would you like to edit?", "Blue");
-                MultiOptionList(options);
-
-                do
-                {
-                    InputInstruction("Chose field to edit:");
-                    input = Console.ReadLine();
-                    input.Trim();
-                    if (input == "1") // editing brand
-                    {
-                        do
-                        {
-                            InputInstruction("Enter new brand:");
-                            input = Console.ReadLine();
-                            input.Trim();
-
-                            if (String.IsNullOrEmpty(input) || input == " ")
-                            {
-                                ShowMessage("Brand cannot be left empty", "Red");
-                            }
-                            else if (input == "q")
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                editString = input;
-                            }
-                        } while (editString == "");
-
-                        editAsset.Brand = editString;
-                        changeEntered = true;
-                    }
-                    else if (input == "2") // editing model
-                    {
-                        do
-                        {
-                            InputInstruction("Enter new model:");
-                            input = Console.ReadLine();
-                            input.Trim();
-
-                            if (String.IsNullOrEmpty(input) || input == " ")
-                            {
-                                ShowMessage("Model cannot be left empty", "Red");
-                            }
-                            else if (input == "q")
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                editString = input;
-                            }
-                        } while (editString == ""); 
-                        
-                        editAsset.Model = editString;
-                        changeEntered = true;
-                    }
-                    else if (input == "3") // editing price
-                    {
-                        do
-                        {
-                            InputInstruction("Enter new price:");
-                            input = Console.ReadLine();
-                            input.Trim();
-
-                            if (String.IsNullOrEmpty(input) || input == " ")
-                            {
-                                ShowMessage("Price cannot be left empty!", "Red");
-                            }
-                            else if (input == "q")
-                            {
-                                return;
-                            }
-                            else if (int.TryParse(input, out int value))
-                            {
-                                if (value == 0)
-                                {
-                                    ShowMessage("Price cannot be 0!", "Red");
-                                }
-                                else if (value < 0)
-                                {
-                                    ShowMessage("Price cannot be negative", "Red");
-                                    value = 0;
-                                }
-                                editPrice = value;
-                            }
-                            else
-                            {
-                                ShowMessage("Price has to be a number!", "Red");
-                            }
-                        } while (editPrice == 0);
-
-                        editAsset.Price = editPrice;
-                        changeEntered = true;
-                    }
-                    else if (input == "4") // editing date
-                    {
-                        do
-                        {
-                            InputInstruction("Enter new date of purchase (yyyy-mm-dd):");
-                            input = Console.ReadLine();
-                            input.Trim();
-
-                            if (String.IsNullOrEmpty(input) || input == " ")
-                            {
-                                ShowMessage("Date cannot be left empty!", "Red");
-                            }
-                            else if (input == "q")
-                            {
-                                return;
-                            }
-                            else if (DateTime.TryParse(input, out DateTime purchased))
-                            {
-                                editDate = purchased;
-                            }
-                            else
-                            {
-                                ShowMessage("Invalid date", "Red");
-                            }
-                        } while (editDate == new DateTime(0001, 01, 01));
-                        
-                        editAsset.DateOfPurchase = editDate;
-                        changeEntered = true;
-                    }
-                    else if (input == "q")
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        ShowMessage("Invalid option", "Red");
-                    }
-                } while (changeEntered == false);
-
-                // update and save hardware item
-                context.Hardwares.Update(editAsset);
-                context.SaveChanges();
-                ShowMessage("Changes saved", "Green");
-            }
             else
             {
-                ShowMessage("Invalid asset ID\n", "Red");
-                return;
+                editAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
+
+                if (editAsset != null)
+                {
+                    ShowMessage($"Editing {editAsset.Brand} {editAsset.Model} with id {editAsset.Id}\n", "Green");
+
+                    do
+                    {
+                        ShowMessage("What field would you like to edit?", "Blue");
+                        MultiOptionList(options);
+
+                        do
+                        {
+                            InputInstruction("Chose field to edit:");
+                            input = Console.ReadLine();
+                            input.Trim();
+                            if (input == "1") // editing brand
+                            {
+                                do
+                                {
+                                    InputInstruction("Enter new brand:");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+
+                                    if (String.IsNullOrEmpty(input) || input == " ")
+                                    {
+                                        ShowMessage("Brand cannot be left empty", "Red");
+                                    }
+                                    else if (input == "q")
+                                    {
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        editString = input;
+                                    }
+                                } while (editString == "");
+
+                                editAsset.Brand = editString;
+                                changeEntered = true;
+                            }
+                            else if (input == "2") // editing model
+                            {
+                                do
+                                {
+                                    InputInstruction("Enter new model:");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+
+                                    if (String.IsNullOrEmpty(input) || input == " ")
+                                    {
+                                        ShowMessage("Model cannot be left empty", "Red");
+                                    }
+                                    else if (input == "q")
+                                    {
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        editString = input;
+                                    }
+                                } while (editString == "");
+
+                                editAsset.Model = editString;
+                                changeEntered = true;
+                            }
+                            else if (input == "3") // editing price
+                            {
+                                do
+                                {
+                                    InputInstruction("Enter new price:");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+
+                                    if (String.IsNullOrEmpty(input) || input == " ")
+                                    {
+                                        ShowMessage("Price cannot be left empty!", "Red");
+                                    }
+                                    else if (input == "q")
+                                    {
+                                        return;
+                                    }
+                                    else if (int.TryParse(input, out int value))
+                                    {
+                                        if (value == 0)
+                                        {
+                                            ShowMessage("Price cannot be 0!", "Red");
+                                        }
+                                        else if (value < 0)
+                                        {
+                                            ShowMessage("Price cannot be negative", "Red");
+                                            value = 0;
+                                        }
+                                        editPrice = value;
+                                    }
+                                    else
+                                    {
+                                        ShowMessage("Price has to be a number!", "Red");
+                                    }
+                                } while (editPrice == 0);
+
+                                editAsset.Price = editPrice;
+                                changeEntered = true;
+                            }
+                            else if (input == "4") // editing date
+                            {
+                                do
+                                {
+                                    InputInstruction("Enter new date of purchase (yyyy-mm-dd):");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+
+                                    if (String.IsNullOrEmpty(input) || input == " ")
+                                    {
+                                        ShowMessage("Date cannot be left empty!", "Red");
+                                    }
+                                    else if (input == "q")
+                                    {
+                                        return;
+                                    }
+                                    else if (DateTime.TryParse(input, out DateTime purchased))
+                                    {
+                                        editDate = purchased;
+                                    }
+                                    else
+                                    {
+                                        ShowMessage("Invalid date", "Red");
+                                    }
+                                } while (editDate == new DateTime(0001, 01, 01));
+
+                                editAsset.DateOfPurchase = editDate;
+                                changeEntered = true;
+                            }
+                            else if (input == "5")
+                            {
+                                changeEntered = true;
+                            }
+                            else if (input.ToLower() == "q")
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                ShowMessage("Invalid option", "Red");
+                            }
+                        } while (changeEntered == false);
+                    } while (input != "5");
+
+                    // update and save hardware item
+                    context.Hardwares.Update(editAsset);
+                    context.SaveChanges();
+                    ShowMessage("Changes saved", "Green");
+                }
+                else
+                {
+                    ShowMessage("Invalid asset ID\n", "Red");
+                    return;
+                }
             }
         }
 
