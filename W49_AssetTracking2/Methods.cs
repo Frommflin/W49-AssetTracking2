@@ -517,7 +517,7 @@ namespace W49_AssetTracking2
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             if (showIds)
             {
-                Console.WriteLine("ID".PadRight(10) + "Type".PadRight(10) + "Brand".PadRight(10) + "Model".PadRight(15) + "Date of purchase".PadRight(20) + "Office".PadRight(10) + "Currency".PadRight(10) + "Price (USD)".PadRight(15) + "Local price");
+                Console.WriteLine("ID".PadRight(5) + "Type".PadRight(10) + "Brand".PadRight(15) + "Model".PadRight(17) + "Date of purchase".PadRight(20) + "Office".PadRight(10) + "Currency".PadRight(10) + "Price (USD)".PadRight(15) + "Local price");
             }
             else
             {
@@ -547,7 +547,7 @@ namespace W49_AssetTracking2
 
                 if (showIds)
                 {
-                    Console.WriteLine(asset.Id.ToString().PadRight(10) + asset.Type.PadRight(10) + asset.Brand.PadRight(10) + asset.Model.PadRight(15) + asset.DateOfPurchase.ToString("yyyy-MM-dd").PadRight(20) + asset.Office.Country.PadRight(10) + asset.Office.LocalCurrency.PadRight(10) + asset.Price.ToString().PadRight(15) + localPrice);
+                    Console.WriteLine(asset.Id.ToString().PadRight(5) + asset.Type.PadRight(10) + asset.Brand.PadRight(15) + asset.Model.PadRight(17) + asset.DateOfPurchase.ToString("yyyy-MM-dd").PadRight(20) + asset.Office.Country.PadRight(10) + asset.Office.LocalCurrency.PadRight(10) + asset.Price.ToString().PadRight(15) + localPrice);
                 }
                 else
                 {
@@ -743,16 +743,16 @@ namespace W49_AssetTracking2
 
         public static void UpdateAsset(DatabaseContext context)
         {
-            ShowMessage("Level 3 under Construction", "Red");
-            /*
+            string[] options = { "Brand", "Model", "Price", "Date of Purchase", "Office", "Save & exit editing" };
+            string[] offices = { "USA", "Sweden", "Italy" };
             string input;
-            string[] options = { "Brand", "Model", "Price", "Date of Purchase", "Save & exit editing" };
             string editString = "";
             int editPrice = 0;
+            int officeId = 0;
             DateTime editDate = new DateTime(0001, 01, 01);
             bool changeEntered = false;
 
-            ShowMessage("Chose asset to edit. \n   Enter 'Q' to leave at any time in the process.", "Blue");
+            ShowMessage("Choose asset to edit. \n   Enter 'Q' to leave at any time in the process.", "Blue");
             ShowAssets(context, true);
             InputInstruction("Asset ID:");
             input = Console.ReadLine();
@@ -765,11 +765,11 @@ namespace W49_AssetTracking2
             }
             else
             {
-                Hardware editAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
+                Asset editAsset = context.Assets.FirstOrDefault(x => x.Id == int.Parse(input));
 
                 if (editAsset != null)
                 {
-                    ShowMessage($"Editing {editAsset.Brand} {editAsset.Model} with id {editAsset.Id}\n", "Green");
+                    ShowMessage($"Editing {editAsset.Brand} {editAsset.Model} in the {editAsset.Office.Country} office\n", "Green");
 
                     do
                     {
@@ -778,7 +778,7 @@ namespace W49_AssetTracking2
 
                         do
                         {
-                            InputInstruction("Chose field to edit:");
+                            InputInstruction("Choose field to edit:");
                             input = Console.ReadLine();
                             input.Trim();
                             if (input == "1") // editing brand
@@ -898,7 +898,39 @@ namespace W49_AssetTracking2
                                 editAsset.DateOfPurchase = editDate;
                                 changeEntered = true;
                             }
-                            else if (input == "5")
+                            else if (input == "5") // editing office
+                            {
+                                ShowMessage("What office is this asset being used in?.", "Blue");
+                                MultiOptionList(offices);
+                                do
+                                {
+                                    InputInstruction("Move to new office:");
+                                    input = Console.ReadLine();
+                                    input.Trim();
+
+                                    switch (input)
+                                    {
+                                        case "1":
+                                            officeId = 1;
+                                            break;
+                                        case "2":
+                                            officeId = 2;
+                                            break;
+                                        case "3":
+                                            officeId = 3;
+                                            break;
+                                        case "q":
+                                            return;
+                                        default:
+                                            ShowMessage("This office doesn't exist", "Red");
+                                            break;
+                                    }
+                                } while (officeId == 0);
+
+                                editAsset.OfficeId = officeId;
+                                changeEntered = true;
+                            }
+                            else if (input == "6") // save changes
                             {
                                 changeEntered = true;
                             }
@@ -911,10 +943,10 @@ namespace W49_AssetTracking2
                                 ShowMessage("Invalid option", "Red");
                             }
                         } while (changeEntered == false);
-                    } while (input != "5");
+                    } while (input != "6");
 
                     // update and save hardware item
-                    context.Hardwares.Update(editAsset);
+                    context.Assets.Update(editAsset);
                     context.SaveChanges();
                     ShowMessage("Changes saved", "Green");
                 }
@@ -924,7 +956,6 @@ namespace W49_AssetTracking2
                     return;
                 }
             }
-            */
         }
 
         public static void RemoveAsset(DatabaseContext context)
