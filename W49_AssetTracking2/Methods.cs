@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Net.Sockets;
 
 namespace W49_AssetTracking2
@@ -504,60 +505,58 @@ namespace W49_AssetTracking2
 
         public static void ShowAssets(DatabaseContext context, bool showIds)
         {
-            ShowMessage("Level 3 under Construction", "Red");
-            /*
             // Collection all data from Hardwares table in db and ordering in a List
-            List<Hardware> orderedAssets = context.Hardwares
-                .OrderBy(a => a.Type)
+            List<Asset> orderedAssets = context.Assets
+                .Include(a => a.Office)
+                .OrderBy(a => a.Office.Country)
                 .ThenBy(a => a.DateOfPurchase)
                 .ToList();
 
             DateTime maxLifeTime = DateTime.Now.AddYears(-3);
 
-            if (showIds) // showing table with IDs
+            // Printing table header
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            if (showIds)
             {
-                // Printing out sorted list to user
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Id".PadRight(10) + "Type".PadRight(20) + "Brand".PadRight(20) + "Model".PadRight(20) + "Price (USD)".PadRight(20) + "Date of purchase");
-                Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
-                Console.ResetColor();
-
-                foreach (Hardware hardware in orderedAssets)
-                {
-                    TimeSpan diff = hardware.DateOfPurchase - maxLifeTime;
-
-                    // Check if date of purchase is less than 3 months away from 3 years and make RED
-                    if (diff.Days < 90)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    Console.WriteLine(hardware.Id.ToString().PadRight(10) + hardware.Type.PadRight(20) + hardware.Brand.PadRight(20) + hardware.Model.PadRight(20) + hardware.Price.ToString().PadRight(20) + hardware.DateOfPurchase.ToString("yyyy-MM-dd"));
-                    Console.ResetColor();
-                }
+                Console.WriteLine("ID".PadRight(10) + "Type".PadRight(10) + "Brand".PadRight(10) + "Model".PadRight(15) + "Date of purchase".PadRight(20) + "Office".PadRight(10) + "Currency".PadRight(10) + "Price (USD)".PadRight(15) + "Local price");
             }
-            else // showing table without IDs
+            else
             {
-                // Printing out sorted list to user
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Type".PadRight(20) + "Brand".PadRight(20) + "Model".PadRight(20) + "Price (USD)".PadRight(20) + "Date of purchase");
-                Console.WriteLine("-------------------------------------------------------------------------------------------------");
-                Console.ResetColor();
+                Console.WriteLine("Type".PadRight(15) + "Brand".PadRight(15) + "Model".PadRight(17) + "Date of purchase".PadRight(20) + "Office".PadRight(10) + "Currency".PadRight(10) + "Price (USD)".PadRight(15) + "Local price");
+            }
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
 
-                foreach (Hardware hardware in orderedAssets)
+            // Printing table content
+            foreach (Asset asset in orderedAssets)
+            {
+                TimeSpan diff = asset.DateOfPurchase - maxLifeTime;
+
+                // Check if date of purchase is less than 3/6 months away from 3 years and make RED/YELLOW.
+                // Counting 1 month as 30 days
+                if (diff.Days < 90)
                 {
-                    TimeSpan diff = hardware.DateOfPurchase - maxLifeTime;
-
-                    // Check if date of purchase is less than 3 months away from 3 years and make RED
-                    if (diff.Days < 90)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    Console.WriteLine(hardware.Type.PadRight(20) + hardware.Brand.PadRight(20) + hardware.Model.PadRight(20) + hardware.Price.ToString().PadRight(20) + hardware.DateOfPurchase.ToString("yyyy-MM-dd"));
-                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Red;
                 }
+                else if (diff.Days < 180)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+
+                // calculating local price and rounding to maximum 2 decimal places
+                double localPrice = Math.Round(asset.Price * asset.Office.CurrencyValue, 2);
+
+                if (showIds)
+                {
+                    Console.WriteLine(asset.Id.ToString().PadRight(10) + asset.Type.PadRight(10) + asset.Brand.PadRight(10) + asset.Model.PadRight(15) + asset.DateOfPurchase.ToString("yyyy-MM-dd").PadRight(20) + asset.Office.Country.PadRight(10) + asset.Office.LocalCurrency.PadRight(10) + asset.Price.ToString().PadRight(15) + localPrice);
+                }
+                else
+                {
+                    Console.WriteLine(asset.Type.PadRight(15) + asset.Brand.PadRight(15) + asset.Model.PadRight(17) + asset.DateOfPurchase.ToString("yyyy-MM-dd").PadRight(20) + asset.Office.Country.PadRight(10) + asset.Office.LocalCurrency.PadRight(10) + asset.Price.ToString().PadRight(15) + localPrice);
+                }
+                Console.ResetColor();
             }
             Console.WriteLine();
-            */
         }
 
         public static void AddAsset(DatabaseContext context)
