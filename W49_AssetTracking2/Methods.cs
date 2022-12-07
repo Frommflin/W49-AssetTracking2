@@ -960,11 +960,9 @@ namespace W49_AssetTracking2
 
         public static void RemoveAsset(DatabaseContext context)
         {
-            ShowMessage("Level 3 under Construction", "Red");
-            /*
             string input;
 
-            ShowMessage("Chose asset to remove. \n   Enter 'Q' to leave.", "Blue");
+            ShowMessage("Choose asset to remove. \n   Enter 'Q' to leave.", "Blue");
             ShowAssets(context, true);
             InputInstruction("Asset ID:");
             input = Console.ReadLine();
@@ -977,14 +975,14 @@ namespace W49_AssetTracking2
             }
             else
             {
-                Hardware removeAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
+                Asset removeAsset = context.Assets.FirstOrDefault(x => x.Id == int.Parse(input));
 
                 if (removeAsset != null)
                 {
                     // remove hardware and save changes to table
-                    context.Hardwares.Remove(removeAsset);
+                    context.Assets.Remove(removeAsset);
                     context.SaveChanges();
-                    ShowMessage($"Successfully removed {removeAsset.Brand} {removeAsset.Model}\n", "Green");
+                    ShowMessage($"Successfully removed {removeAsset.Brand} {removeAsset.Model} from {removeAsset.Office.Country} office\n", "Green");
                 }
                 else
                 {
@@ -992,8 +990,6 @@ namespace W49_AssetTracking2
                     return;
                 }
             }
-        }
-        */
         }
     }
 }
