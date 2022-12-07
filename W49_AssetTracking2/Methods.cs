@@ -279,7 +279,6 @@ namespace W49_AssetTracking2
             int editPrice = 0;
             DateTime editDate = new DateTime(0001,01,01);
             bool changeEntered = false;
-            Hardware editAsset;
 
             ShowMessage("Chose asset to edit. \n   Enter 'Q' to leave at any time in the process.", "Blue");
             ShowAssets(context, true);
@@ -294,7 +293,7 @@ namespace W49_AssetTracking2
             }
             else
             {
-                editAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
+                Hardware editAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
 
                 if (editAsset != null)
                 {
@@ -455,5 +454,38 @@ namespace W49_AssetTracking2
             }
         }
 
+        public static void RemoveAsset(DatabaseContext context)
+        {
+            string input;
+
+            ShowMessage("Chose asset to remove. \n   Enter 'Q' to leave.", "Blue");
+            ShowAssets(context, true);
+            InputInstruction("Asset ID:");
+            input = Console.ReadLine();
+            input.Trim();
+            Console.WriteLine();
+
+            if (input.ToLower() == "q")
+            {
+                return;
+            }
+            else
+            {
+                Hardware removeAsset = context.Hardwares.FirstOrDefault(x => x.Id == int.Parse(input));
+
+                if (removeAsset != null)
+                {
+                    // remove hardware and save changes to table
+                    context.Hardwares.Remove(removeAsset);
+                    context.SaveChanges();
+                    ShowMessage($"Successfully removed {removeAsset.Brand} {removeAsset.Model}\n", "Green");
+                }
+                else
+                {
+                    ShowMessage("Invalid asset ID\n", "Red");
+                    return;
+                }
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ while (true)
             break;
         case "4":
             // Deleting asset
-            Methods.ShowMessage("Delete asset", "Blue");
+            Methods.RemoveAsset(context);
             break;
         case "5":
             // Exiting application
