@@ -106,7 +106,67 @@ namespace W49_AssetTracking2
                 LocalCurrency = "EUR",
                 CurrencyValue = 0.99
             });
-
+            
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 1,
+                Type = "Computer",
+                Brand = "Lenovo",
+                Model = "Ideacentre",
+                Price = 1530,
+                DateOfPurchase = new DateTime(2019, 12, 20),
+                OfficeId = 2
+            });
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 2,
+                Type = "Computer",
+                Brand = "HP",
+                Model = "Z2 Tower",
+                Price = 1490,
+                DateOfPurchase = new DateTime(2022, 02, 28),
+                OfficeId = 3
+            });
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 3,
+                Type = "Laptop",
+                Brand = "Lenovo",
+                Model = "ThinkPad X1",
+                Price = 580,
+                DateOfPurchase = new DateTime(2022, 11, 27),
+                OfficeId = 3
+            });
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 4,
+                Type = "Laptop",
+                Brand = "Samsung",
+                Model = "Galaxy",
+                Price = 550,
+                DateOfPurchase = new DateTime(2020, 04, 18),
+                OfficeId = 1
+            });
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 5,
+                Type = "Phone",
+                Brand = "Samsung",
+                Model = "S20",
+                Price = 180,
+                DateOfPurchase = new DateTime(2022, 01, 13),
+                OfficeId = 2
+            });
+            ModelBuilder.Entity<Asset>().HasData(new Asset
+            {
+                Id = 6,
+                Type = "Phone",
+                Brand = "Apple",
+                Model = "iPhone 10",
+                Price = 250,
+                DateOfPurchase = new DateTime(2021, 10, 30),
+                OfficeId = 1
+            });
         }
     }
 }
