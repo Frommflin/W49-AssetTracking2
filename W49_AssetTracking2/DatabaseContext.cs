@@ -85,6 +85,28 @@ namespace W49_AssetTracking2
              *  ---              Level 3                 ---
              *  --------------------------------------------
             */
+            ModelBuilder.Entity<Office>().HasData(new Office
+            {
+                Id = 1,
+                Country = "USA",
+                LocalCurrency = "USD",
+                CurrencyValue = 1.00
+            });
+            ModelBuilder.Entity<Office>().HasData(new Office
+            {
+                Id = 2,
+                Country = "Sweden",
+                LocalCurrency = "SEK",
+                CurrencyValue = 10.79
+            });
+            ModelBuilder.Entity<Office>().HasData(new Office
+            {
+                Id = 3,
+                Country = "Italy",
+                LocalCurrency = "EUR",
+                CurrencyValue = 0.99
+            });
+
         }
     }
 }
